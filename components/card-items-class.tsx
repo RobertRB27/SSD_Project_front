@@ -4,17 +4,21 @@ import { Card, CardContent } from "@/components/ui/card";
 import MultipleSelect from "@/components/multiple-select";
 import axios from "axios";
 
-export default function ItemCard() {
-  const [families, setFamilies] = useState([]);
-  const [items, setItems] = useState([]);
-  const [selectedFamilies, setSelectedFamilies] = useState([]);
+type Family = {
+  id: string;
+  value: string;
+};
 
-  // Obtener valores únicos de 'family' desde la API route
+export default function ItemCard() {
+  const [families, setFamilies] = useState<Family[]>([]);
+  const [items, setItems] = useState<Family[]>([]);
+  const [selectedFamilies, setSelectedFamilies] = useState<Family[]>([]);
+
   useEffect(() => {
     const fetchFamilies = async () => {
       try {
         const response = await axios.get("/api/items/family");
-        console.log("Families response:", response.data); // Verificar respuesta
+        console.log("Families response:", response.data);
         const familiesData = response.data.families.map((family: string) => ({
           id: family,
           value: family,
@@ -28,7 +32,6 @@ export default function ItemCard() {
     fetchFamilies();
   }, []);
 
-  // Obtener 'item_nbr' basados en las familias seleccionadas
   useEffect(() => {
     const fetchItems = async () => {
       if (selectedFamilies.length === 0) return;
@@ -37,7 +40,7 @@ export default function ItemCard() {
         const response = await axios.post("/api/items/itemNbr", {
           selectedFamilies: selectedFamilies.map((family) => family.value),
         });
-        console.log("Items response:", response.data); // Verificar respuesta
+        console.log("Items response:", response.data);
         const itemsData = response.data.items.map((itemNbr: string) => ({
           id: itemNbr,
           value: itemNbr,
@@ -60,11 +63,11 @@ export default function ItemCard() {
               title="Class"
               options={families}
               isMulti={true}
-              onChange={setSelectedFamilies} // Actualiza las familias seleccionadas
+              onChange={setSelectedFamilies}
             />
             <MultipleSelect
               title="Items"
-              options={items} // Opciones de items basadas en las familias seleccionadas
+              options={items}
               isMulti={true}
             />
           </div>
@@ -73,4 +76,3 @@ export default function ItemCard() {
     </Card>
   );
 }
-
