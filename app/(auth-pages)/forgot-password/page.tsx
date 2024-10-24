@@ -15,24 +15,23 @@ export default function ForgotPassword({
     <>
       <form className="flex-1 flex flex-col w-full gap-2 text-foreground [&>input]:mb-6 min-w-64 max-w-64 mx-auto">
         <div>
-          <h1 className="text-2xl font-medium">Reset Password</h1>
+          <h1 className="text-2xl font-medium">Restaurar Contraseña</h1>
           <p className="text-sm text-secondary-foreground">
-            Already have an account?{" "}
+            Ya tienes una cuenta?{" "}
             <Link className="text-primary underline" href="/sign-in">
-              Sign in
+              Inicia sesión
             </Link>
           </p>
         </div>
         <div className="flex flex-col gap-2 [&>input]:mb-3 mt-8">
           <Label htmlFor="email">Email</Label>
-          <Input name="email" placeholder="you@example.com" required />
+          <Input name="email" placeholder="tucorreo@ejemplo.com" required />
           <SubmitButton formAction={forgotPasswordAction}>
-            Reset Password
+            Restaurar Contraseña
           </SubmitButton>
           <FormMessage message={searchParams} />
         </div>
       </form>
-      <SmtpMessage />
     </>
   );
 }
