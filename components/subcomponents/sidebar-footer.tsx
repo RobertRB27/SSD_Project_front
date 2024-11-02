@@ -15,28 +15,13 @@ export default async function SidebarFoot() {
   
   
     return (
-        <SidebarFooter>
+        <SidebarFooter >
         <SidebarMenu>
-          <SidebarMenuItem>
-            <DropdownMenu>
-              <DropdownMenuTrigger asChild>
-                <SidebarMenuButton>
-                  {data.user.email}
-                  <ChevronUp className="ml-auto" />
-                </SidebarMenuButton>
-              </DropdownMenuTrigger>
-              <DropdownMenuContent
-                side="top"
-                className="w-[--radix-popper-anchor-width]"
-              >
-   
-                <form action={signOutAction}>
-                  <Button type="submit" variant={"outline"}>Cerrar Sesion</Button>
-                </form>
-                
-
-              </DropdownMenuContent>
-            </DropdownMenu>
+          <SidebarMenuItem className="flex flex-col" >
+            {data.user.email}
+            <form action={signOutAction}>
+                  <Button type="submit" variant={"outline"} className="bg-red-200">Cerrar Sesion</Button>
+            </form>
           </SidebarMenuItem>
         </SidebarMenu>
       </SidebarFooter>
