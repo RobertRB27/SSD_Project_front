@@ -1,62 +1,62 @@
 "use client";
-
 import { Card, CardContent } from "@/components/ui/card";
-import MultipleSelectSync, { Option }from "@/components/subcomponents/multiple-select-sync";
-
+import MultipleSelectSync, { Option } from "@/components/subcomponents/multiple-select-sync";
 import { families, products } from '@/data/data';
 import { useState } from "react";
 
+interface CardProductProps {
+  setSelectedProducts: (products: number[]) => void;
+}
 
-
-
-export default function CardProduct() {
-
+export default function CardProduct({ setSelectedProducts }: CardProductProps) {
   const [selectedFamilies, setSelectedFamilies] = useState<Option[]>([]);
   const [filteredProducts, setFilteredProducts] = useState(products);
 
-  // Mapear las tiendas al formato esperado por MultipleSelectSync
-  const mappedProducts: Option[] = filteredProducts.map(product => ({
-    id: product.label,
-    value: product.label  // Asumiendo que quieres usar el campo 'label' como valor mostrado
-  }));
+  const handleFamilyChange = (selected: Option | Option[]) => {
+    const selectedArray = Array.isArray(selected) ? selected : [selected];
+    setSelectedFamilies(selectedArray);
 
-  const handleCityChange = (selected: Option | Option[]) => {
-    // Asegurarnos de que siempre trabajamos con un array
-    const selectedOption = selected as Option; // Tratamos selected como una única opción
-    setSelectedFamilies([selectedOption]);
-    
-    // Si no hay selección, mostrar todos los productos
-    if (!selectedOption) {
+    // Si no hay familias seleccionadas, muestra todos los productos
+    if (!selectedArray.length) {
       setFilteredProducts(products);
       return;
     }
 
-    // Filtrar productos que coincidan con la familia seleccionada
-    const filteredProducts = products.filter(product => 
-      selectedOption.id === product.family
+    // Filtra productos en base a las familias seleccionadas
+    const filtered = products.filter(product => 
+      selectedArray.some(family => family.id === product.family)
     );
-    setFilteredProducts(filteredProducts);
+    setFilteredProducts(filtered);
   };
 
-  // Mapear las familias al formato esperado por MultipleSelectSync
-  const mappedFamilies: Option[] = families.map(family => ({
-    id: family.value,
-    value: family.label
-  }));
+  const handleProductChange = (selected: Option | Option[]) => {
+    const selectedProducts = Array.isArray(selected) ? selected : [selected];
+    setSelectedProducts(selectedProducts.map(product => Number(product.id)));
+  };
 
   return (
-    <Card className="w-[350px] md:w-[400px]" >
-        <CardContent>
+    <Card className="w-[350px] md:w-[400px]">
+      <CardContent>
         <form>
           <div className="grid w-full items-center gap-4 mt-5">
-            <MultipleSelectSync options={mappedFamilies} title="Familia de Productos" isMulti={false} onChange={handleCityChange} placeholder="Selecciona las familias"/>
-
-            <MultipleSelectSync options={mappedProducts} title="Productos" isMulti={true} placeholder="Selecciona los productos"/>
-
+            <MultipleSelectSync 
+              options={families.map(family => ({ id: family.value, value: family.label }))} 
+              title="Familia de Productos" 
+              isMulti={false} 
+              onChange={handleFamilyChange} 
+              placeholder="Selecciona la familia"
+            />
+            <MultipleSelectSync 
+              options={filteredProducts.map(product => ({ id: product.id, value: product.label }))}  // Usa `id` de productos
+              title="Productos" 
+              isMulti={true} 
+              placeholder="Selecciona los productos"
+              onChange={handleProductChange}
+            />
           </div>
         </form>
       </CardContent>
-   
     </Card>
   );
 }
+

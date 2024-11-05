@@ -19,25 +19,25 @@ export const items = [
   ]
 
 export const months = [
-    { id: "enero", value: "Enero" },
-    { id: "febrero", value: "Febrero" },
-    { id: "marzo", value: "Marzo" },
-    { id: "abril", value: "Abril" },
-    { id: "mayo", value: "Mayo" },
-    { id: "junio", value: "Junio" },
-    { id: "julio", value: "Julio" },
-    { id: "agosto", value: "Agosto" },
-    { id: "septiembre", value: "Septiembre" },
-    { id: "octubre", value: "Octubre" },
-    { id: "noviembre", value: "Noviembre" },
-    { id: "diciembre", value: "Diciembre" },
+    { id: 1, value: "Enero" },
+    { id: 2, value: "Febrero" },
+    { id: 3, value: "Marzo" },
+    { id: 4, value: "Abril" },
+    { id: 5, value: "Mayo" },
+    { id: 6, value: "Junio" },
+    { id: 7, value: "Julio" },
+    { id: 8, value: "Agosto" },
+    { id: 9, value: "Septiembre" },
+    { id: 10, value: "Octubre" },
+    { id: 11, value: "Noviembre" },
+    { id: 12, value: "Diciembre" },
 ]
 
 export const models = [
-    { id: "DecisionTree", value: "Decision Tree", isDisabled: false },
-    { id: "XGBoost", value: "eXtreme Gradient Boosting", isDisabled: false },
-    { id: "RandomForest", value: "RandomForest", isDisabled: true },
-    { id: "LinearRegression", value: "Linear Regression", isDisabled: false }
+    { id: "decision_tree_model", value: "Decision Tree", isDisabled: false },
+    { id: "xgboost_model", value: "eXtreme Gradient Boosting", isDisabled: false },
+    { id: "random_forest_model", value: "Random Forest", isDisabled: true },
+    { id: "linea_regression_model", value: "Linear Regression", isDisabled: false }
 ]
 
 export const cities = [

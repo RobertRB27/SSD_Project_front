@@ -5,7 +5,7 @@ import makeAnimated from "react-select/animated";
 import { Label } from "@/components/ui/label";
 
 interface Option {
-  id: string;
+  id: string | number;
   value: string;
   isDisabled?: boolean;
 }
@@ -27,11 +27,25 @@ const MultipleSelect: React.FC<MultipleSelectProps> = ({
   isMulti = false,
   onChange,
 }) => {
+  // Mapea las opciones para que `label` y `value` estén en el formato de `react-select`
   const selectOptions = options.map((option) => ({
     label: option.value,
     value: option.id,
     isDisabled: option.isDisabled,
   }));
+  
+  // Ajusta `onChange` para que devuelva un array de opciones con `id` y `value`
+  const handleChange = (selected: any) => {
+    const mappedSelected = Array.isArray(selected)
+      ? selected.map((option) => ({
+          id: option.value,    // Usamos `value` como `id`
+          value: option.label, // Usamos `label` como `value`
+        }))
+      : selected
+      ? [{ id: selected.value, value: selected.label }]
+      : [];
+    onChange?.(mappedSelected as Option[]);
+  };
 
   return (
     <div className="flex flex-col space-y-1.5">
@@ -42,7 +56,7 @@ const MultipleSelect: React.FC<MultipleSelectProps> = ({
         isMulti={isMulti}
         options={selectOptions}
         placeholder={placeholder}
-        onChange={(selected) => onChange?.(selected as Option[])}
+        onChange={handleChange}
       />
     </div>
   );
