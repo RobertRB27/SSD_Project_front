@@ -22,7 +22,7 @@ export default function FilterForm({ setIsLoading }: FilterFormProps) {
       store_nbr: selectedStores,
       item_nbr: selectedProducts,
       months: selectedMonths,
-      years: 2024,
+      years: [2024],
       forecast_model: selectedModel,
     };
 
