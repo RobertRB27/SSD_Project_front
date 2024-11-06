@@ -35,9 +35,9 @@ export const months = [
 
 export const models = [
     { id: "decision_tree_model", value: "Decision Tree", isDisabled: false },
-    { id: "xgboost_model", value: "eXtreme Gradient Boosting", isDisabled: false },
+    { id: "xgboost_model", value: "eXtreme Gradient Boosting", isDisabled: true },
     { id: "random_forest_model", value: "Random Forest", isDisabled: true },
-    { id: "linea_regression_model", value: "Linear Regression", isDisabled: false }
+    { id: "linea_regression_model", value: "Linear Regression", isDisabled: true }
 ]
 
 export const cities = [

@@ -37,6 +37,12 @@ export default function CardModel({ setSelectedModel, setSelectedMonths }: CardM
                 }}
               />
             </div>
+            <div className="flex flex-row justify-start items-start">
+                <span className="flex h-2 w-2 translate-y-1 rounded-full bg-red-500 mr-1" />
+                <CardDescription>Solo Desicion Tree habilitado temporalmente.</CardDescription>
+            </div>
+
+
             <MultipleSelect 
               options={months} 
               title="Meses" 

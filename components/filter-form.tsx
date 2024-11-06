@@ -4,19 +4,20 @@ import CardModel from "./subcomponents/card-models";
 import CardProduct from "./subcomponents/card-selection";
 import { Button } from "@/components/ui/button";
 import CardStores from "./subcomponents/card-stores";
+import { months, stores, products } from '@/data/data';
+import { Items } from "@/components/table/columns";
 
 interface FilterFormProps {
   setIsLoading: (loading: boolean) => void;
+  setPredictions: (predictions: Items[]) => void;
 }
 
-export default function FilterForm({ setIsLoading }: FilterFormProps) {
-  // Estados para capturar los datos de entrada
+export default function FilterForm({ setIsLoading, setPredictions }: FilterFormProps) {
   const [selectedModel, setSelectedModel] = useState<string | null>(null);
   const [selectedStores, setSelectedStores] = useState<number[]>([]);
   const [selectedProducts, setSelectedProducts] = useState<number[]>([]);
   const [selectedMonths, setSelectedMonths] = useState<number[]>([]);
 
-  // Función para manejar el envío de la solicitud
   const handleCreateForecast = async () => {
     const forecastData = {
       store_nbr: selectedStores,
@@ -27,9 +28,8 @@ export default function FilterForm({ setIsLoading }: FilterFormProps) {
     };
 
     try {
-      setIsLoading(true); // Simula la carga
+      setIsLoading(true);
 
-      // Enviar datos al API
       const response = await fetch("https://api-backend-production-912a.up.railway.app/predict/", {
         method: "POST",
         headers: {
@@ -40,10 +40,24 @@ export default function FilterForm({ setIsLoading }: FilterFormProps) {
 
       const result = await response.json();
 
-      // Manejo de la respuesta
       if (response.ok) {
-        console.log("Predicciones recibidas:", result.predictions);
-        // Aquí puedes pasar los datos a un componente que muestre las gráficas o resultados
+        const formattedData = result.predictions.map((prediction: [number, number, number, number, number]) => {
+          const [store_nbr, item_nbr, month, , amount] = prediction;
+
+          const store = stores.find((s) => s.id === store_nbr)?.label || "Unknown Store";
+          const name = products.find((p) => p.id === item_nbr)?.label || "Unknown Product";
+          const monthName = months.find((m) => m.id === month)?.value || "Unknown Month";
+
+          return {
+            item_nbr,
+            name,
+            store,
+            month: monthName,
+            amount,
+          };
+        });
+
+        setPredictions(formattedData);  // Pasar los datos formateados al componente padre
       } else {
         console.error("Error en la predicción:", result.detail);
       }
@@ -56,16 +70,14 @@ export default function FilterForm({ setIsLoading }: FilterFormProps) {
 
   return (
     <div className="flex flex-col gap-4">
-    <CardModel setSelectedModel={setSelectedModel} setSelectedMonths={setSelectedMonths} />
+      <CardModel setSelectedModel={setSelectedModel} setSelectedMonths={setSelectedMonths} />
+      <CardStores setSelectedStores={setSelectedStores} />
+      <CardProduct setSelectedProducts={setSelectedProducts} />
 
-    <CardStores setSelectedStores={setSelectedStores} />
-
-    <CardProduct setSelectedProducts={setSelectedProducts} />
-
-    <div className="flex flex-row justify-center gap-4">
-      <Button variant="outline">Cancelar</Button>
-      <Button onClick={handleCreateForecast}>Crear Pronóstico</Button>
-    </div>
+      <div className="flex flex-row justify-center gap-4">
+        <Button variant="outline">Cancelar</Button>
+        <Button onClick={handleCreateForecast}>Crear Pronóstico</Button>
+      </div>
     </div>
   );
 }
